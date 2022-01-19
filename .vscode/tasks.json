@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build-CPP",
+            "detail": "Build current file with MinGW Cpp",
+            "type": "shell",
+            "command": "D:\\MinGW\\bin\\mingw32-c++.exe",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+        },
+        {
+            "label": "Run-Exe",
+            "detail": "Run exe of current file",
+            "type": "shell",
+            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Build-CPP&Run",
+            "detail": "Build current file with MinGW Cpp and then run exe",
+            "type": "shell",
+            "dependsOn": [
+                "Build-CPP",
+                "Run-Exe",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Run-Bat",
+            "detail": "Run current bat file",
+            "type": "shell",
+            "command": "${file}",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [],
+            "group": "test"
+        }
+    ]
+}
