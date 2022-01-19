@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define QUEUE_BUF 10
-
 Queue *QueueCreate(int size)
 {
     QueueInfo *dataArr = malloc(sizeof(QueueInfo) * size);
@@ -101,7 +99,6 @@ bool QueueIsContain(const Queue *pQueue, const QueueInfo *data)
 void QueueVisit(const Queue *pQueue)
 {
     int i = pQueue->header;
-    char buffer[QUEUE_BUF];
     printf("Visit Queue Data as <U8-Hex>:");
     while (i != pQueue->tailer)
     {
