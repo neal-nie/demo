@@ -31,7 +31,7 @@ Queue *QueueCreate(int size);
 bool QueueIsEmpty(const Queue *pQueue);
 
 // check Queue is Full or not
-bool QueueisFull(const Queue *pQueue);
+bool QueueIsFull(const Queue *pQueue);
 
 // enqueue data into Queue
 bool EnQueue(Queue *pQueue, const QueueInfo *data);
@@ -45,5 +45,6 @@ int QueueGetLength(const Queue *pQueue);
 // check data in Queue or not
 bool QueueIsContain(const Queue *pQueue, const QueueInfo *data);
 
-// visit data in Queue as U8-Hex
-void QueueVisit(const Queue *pQueue);
+// visit data in Queue as U8-Hex.
+// showAll: true, visit whole buffer; false, data part.
+void QueueVisit(const Queue *pQueue, bool showAll);

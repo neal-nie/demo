@@ -13,7 +13,28 @@
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+        },
+        {
+            "label": "Build-CPP-Lib",
+            "detail": "Build current file with MinGW Cpp including lib folder",
+            "type": "shell",
+            "command": "D:\\MinGW\\bin\\mingw32-c++.exe",
+            "args": [
+                "-Ilib", // include header file lib dir
+                "-g", // generate exe support gdb for debug
+                "${file}",
+                "lib\\*.c", // compile source file in lib dir
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"
@@ -34,6 +55,18 @@
             "type": "shell",
             "dependsOn": [
                 "Build-CPP",
+                "Run-Exe",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Build-CPP-Lib&Run",
+            "detail": "Build current file with MinGW Cpp including lib folder and then run exe",
+            "type": "shell",
+            "dependsOn": [
+                "Build-CPP-Lib",
                 "Run-Exe",
             ],
             "dependsOrder": "sequence",

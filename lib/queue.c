@@ -10,14 +10,14 @@
 
 Queue *QueueCreate(int size)
 {
-    QueueInfo *dataArr = malloc(sizeof(QueueInfo) * size);
+    QueueInfo *dataArr = (QueueInfo *)malloc(sizeof(QueueInfo) * size);
     if (dataArr == NULL)
     {
         printf("ERROR: fail to create Queue.\n");
         return NULL;
     }
     memset(dataArr, 0, sizeof(QueueInfo) * size);
-    Queue *pQueue = malloc(sizeof(Queue));
+    Queue *pQueue = (Queue *)malloc(sizeof(Queue));
     if (pQueue == NULL)
     {
         printf("ERROR: fail to create Queue.\n");
@@ -47,14 +47,14 @@ bool QueueIsEmpty(const Queue *pQueue)
     return pQueue->header == pQueue->tailer;
 }
 
-bool QueueisFull(const Queue *pQueue)
+bool QueueIsFull(const Queue *pQueue)
 {
     return pQueue->header == QueueMovePosForward(pQueue, pQueue->tailer);
 }
 
 bool EnQueue(Queue *pQueue, const QueueInfo *data)
 {
-    if (QueueisFull(pQueue))
+    if (QueueIsFull(pQueue))
     {
         printf("ERROR: queue overflow.\n");
         return false;
@@ -66,7 +66,7 @@ bool EnQueue(Queue *pQueue, const QueueInfo *data)
 
 bool DeQueue(Queue *pQueue, QueueInfo *data)
 {
-    if (QueueisFull(pQueue))
+    if (QueueIsEmpty(pQueue))
     {
         printf("ERROR: queue underflow.\n");
         return false;
@@ -96,19 +96,31 @@ bool QueueIsContain(const Queue *pQueue, const QueueInfo *data)
     return false;
 }
 
-void QueueVisit(const Queue *pQueue)
+void QueueVisit(const Queue *pQueue, bool showAll)
 {
-    int i = pQueue->header;
-    printf("Visit Queue Data as <U8-Hex>:");
-    while (i != pQueue->tailer)
+    int start = showAll ? 0 : pQueue->header;
+    int end = showAll ? pQueue->size : pQueue->tailer;
+    int i = start;
+    printf("Visit Queue Data as <U8-Hex>:\n");
+    while (i != end)
     {
-        printf("\n\tAt [%d]:\t");
+        char prefix[10] = "\0";
+        if (i == pQueue->header)
+        {
+            strcpy(prefix, "header->");
+        }
+        if (i == pQueue->tailer)
+        {
+            strcpy(prefix, "tailer->");
+        }
+        printf("%-9sAt [%d]:\t", prefix, i);
         unsigned char *pChr = (unsigned char *)&pQueue->dataArr[i];
         for (size_t j = 0; j < sizeof(QueueInfo); j++)
         {
             printf("%X ", *pChr);
             pChr++;
         }
-        i = QueueMovePosForward(pQueue, i);
+        printf("\n");
+        i = showAll ? (i + 1) : QueueMovePosForward(pQueue, i);
     }
 }
