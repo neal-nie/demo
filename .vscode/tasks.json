@@ -50,6 +50,20 @@
             },
             "problemMatcher": [],
             "group": "test"
+        },
+        {
+            "label": "Clear",
+            "detail": "Delete all exe files, forced, sub-folder search and quiet.",
+            "type": "shell",
+            "command": "del",
+            "args": [
+                "/f",
+                "/s",
+                "/q",
+                "*.exe"
+            ],
+            //del /f /q */*.exe",
+            "problemMatcher": []
         }
     ]
 }
