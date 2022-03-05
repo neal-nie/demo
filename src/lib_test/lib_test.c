@@ -8,7 +8,7 @@ void ShowQueueInfo(Queue *pQueue)
     printf("\tLength:\t[%d]\n", QueueGetLength(pQueue));
     printf("\tIs Empty:\t[%d]\n", QueueIsEmpty(pQueue));
     printf("\tIs Full:\t[%d]\n", QueueIsFull(pQueue));
-    QueueVisit(pQueue, false);
+    QueueShow(pQueue, false);
 }
 
 int main()

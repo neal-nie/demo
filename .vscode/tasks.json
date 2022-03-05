@@ -95,7 +95,9 @@
                 "/q",
                 "*.exe"
             ],
-            //del /f /q */*.exe",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
             "problemMatcher": []
         }
     ]

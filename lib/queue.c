@@ -96,7 +96,7 @@ bool QueueIsContain(const Queue *pQueue, const QueueInfo *data)
     return false;
 }
 
-void QueueVisit(const Queue *pQueue, bool showAll)
+void QueueShow(const Queue *pQueue, bool showAll)
 {
     int start = showAll ? 0 : pQueue->header;
     int end = showAll ? pQueue->size : pQueue->tailer;

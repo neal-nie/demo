@@ -47,4 +47,4 @@ bool QueueIsContain(const Queue *pQueue, const QueueInfo *data);
 
 // visit data in Queue as U8-Hex.
 // showAll: true, visit whole buffer; false, data part.
-void QueueVisit(const Queue *pQueue, bool showAll);
+void QueueShow(const Queue *pQueue, bool showAll);
