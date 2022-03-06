@@ -70,7 +70,10 @@
             ],
             "dependsOrder": "sequence",
             "problemMatcher": [],
-            "group": "test"
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         },
         {
             "label": "Build-CPP-Lib&Run",
