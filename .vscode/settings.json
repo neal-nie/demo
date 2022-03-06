@@ -1,3 +1,7 @@
 {
-    "restructuredtext.syntaxHighlighting.disabled": true
+    "restructuredtext.syntaxHighlighting.disabled": true,
+    // "terminal.integrated.automationProfile.windows": {
+    //     "path": "C:/Windows/System32/cmd.exe",
+    //     "icon": "terminal-cmd"
+    // }
 }
