@@ -17,29 +17,22 @@ class Solution
 public:
     vector<int> twoSum(vector<int> &nums, int target)
     {
-        sort(nums.begin(), nums.end());
-        int left = 0;
-        int right = nums.size() - 1;
-        while (left != right)
+        for (int i = 0; i < nums.size() - 1; i++)
         {
-            if (nums[left] + nums[right] > target)
+            for (int j = i + 1; j < nums.size(); j++)
             {
-                right--;
-            }
-            else if (nums[left] + nums[right] < target)
-            {
-                left++;
-            }
-            else
-            {
-                return {left, right};
+                if (nums[i] + nums[j] == target)
+                {
+                    return {i, j};
+                }
             }
         }
         return {};
     }
 };
 
-int main() {
+int main()
+{
     vector<int> input = {3, 2, 4};
     Solution s;
     (void)s.twoSum(input, 6);
