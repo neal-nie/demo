@@ -1,16 +1,16 @@
 {
     "version": "2.0.0",
-    "windows": {
-        "options": {
-            "shell": {
-                "args": [
-                    "/d",
-                    "/c"
-                ],
-                "executable": "C:\\Windows\\System32\\cmd.exe"
-            }
-        }
-    },
+    // "windows": {
+    //     "options": {
+    //         "shell": {
+    //             "args": [
+    //                 "/d",
+    //                 "/c"
+    //             ],
+    //             "executable": "C:\\Windows\\System32\\cmd.exe"
+    //         }
+    //     }
+    // },
     "tasks": [
         {
             "label": "Build-CPP",
