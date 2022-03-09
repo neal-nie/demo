@@ -6,7 +6,8 @@ Definition for singly-linked list.
 
 using namespace std;
 
-struct ListNode {
+struct ListNode
+{
     int val;
     ListNode *next;
     ListNode() : val(0), next(nullptr) {}
@@ -14,19 +15,23 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode* ptr1;
-        ListNode * ptr2;
-        ListNode*pre = new ListNode(0, head);
+    ListNode *removeNthFromEnd(ListNode *head, int n)
+    {
+        ListNode *ptr1;
+        ListNode *ptr2;
+        ListNode *pre = new ListNode(0, head);
         ptr1 = head;
         ptr2 = pre;
         int i = 0;
-        while(ptr1) {
+        while (ptr1)
+        {
             ptr1 = ptr1->next;
-            i ++;
-            if (i > n) {
+            i++;
+            if (i > n)
+            {
                 ptr2 = ptr2->next;
             }
         }
