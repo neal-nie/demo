@@ -23,6 +23,9 @@ int main()
     s2 += s0;
     cout << s2 << endl;
 
+
+    cout << s2.substr(2, 3) << endl;
+
     // compare
     string s3 = "test";
     bool flg = s3 > s1;
