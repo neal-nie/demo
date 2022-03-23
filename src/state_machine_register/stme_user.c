@@ -16,18 +16,6 @@
 #define STATE_FAULT 2
 #define STATE_BUFF 3 // dummy state value as stateNum.
 
-uint8 g_state;
-uint16 g_onCounter;
-
-#if STATIC_MEMORY
-StmeLibTransitionCallBack g_transitionFuncArr[STATE_BUFF];
-StmeLibActionCallBack g_actionFuncArr[STATE_BUFF * STATE_BUFF];
-#endif
-
-size_t currentTime;
-
-const uint16 OnCounterMin = 500;
-
 typedef struct
 {
     bool flgSwitchOn;
@@ -35,6 +23,20 @@ typedef struct
     bool flgFault;
     bool flgHeal;
 } StmeUserCondStru;
+
+typedef struct
+{
+    uint8 state;
+    uint16 onCounter;
+#if STATIC_MEMORY
+    StmeLibTransitionCallBack transitionFuncArr[STATE_BUFF];
+    StmeLibActionCallBack actionFuncArr[STATE_BUFF * STATE_BUFF];
+#endif
+} StmeUserHistoryStru;
+
+StmeUserHistoryStru g_stmeUserHistoryInfo;
+const uint16 OnCounterMin = 500;
+size_t currentTime;
 
 uint8 StmeUserJumpOutOff(const void *condInfo)
 {
@@ -55,7 +57,7 @@ uint8 StmeUserJumpOutOn(const void *condInfo)
 {
     StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
 
-    if (userCondInfo->flgSwitchOff && g_onCounter > OnCounterMin)
+    if (userCondInfo->flgSwitchOff && g_stmeUserHistoryInfo.onCounter > OnCounterMin)
     {
         // ON to OFF, on at least last time of OnCounterMin
         return STATE_OFF;
@@ -92,18 +94,19 @@ uint8 StmeUserJumpOutFault(const void *condInfo)
 
 void StmeUserEnterOn(void)
 {
-    g_onCounter = 0;
+    g_stmeUserHistoryInfo.onCounter = 0;
 }
 
 void StmeUserDuringOn(void)
 {
-    g_onCounter++;
+    g_stmeUserHistoryInfo.onCounter++;
 }
 
 void StmeUserInit(StmeLibCallBackStru *stmeCallBackHandle)
 {
-    g_state = STATE_OFF;
-    g_onCounter = 0;
+    memset(&g_stmeUserHistoryInfo, 0, sizeof(StmeUserHistoryStru));
+    g_stmeUserHistoryInfo.state = STATE_OFF;
+    g_stmeUserHistoryInfo.onCounter = 0;
     StmeLibRegisterTransition(STATE_ON, StmeUserJumpOutOn, stmeCallBackHandle);
     StmeLibRegisterTransition(STATE_OFF, StmeUserJumpOutOff, stmeCallBackHandle);
     StmeLibRegisterTransition(STATE_FAULT, StmeUserJumpOutFault, stmeCallBackHandle);
@@ -121,8 +124,8 @@ int main()
 #if STATIC_MEMORY
     StmeLibCallBackStru userStmeInfo = {
         .stateNum = STATE_BUFF,
-        .actionMap = g_actionFuncArr,
-        .transitionList = g_transitionFuncArr,
+        .actionMap = g_stmeUserHistoryInfo.actionFuncArr,
+        .transitionList = g_stmeUserHistoryInfo.transitionFuncArr,
     };
     StmeLibCallBackStru *userStmeHandle = &userStmeInfo;
 #else
@@ -168,7 +171,7 @@ int main()
             userCondInfo.flgSwitchOn = false;
             userCondInfo.flgSwitchOff = true;
         }
-        uint8 stateCur = StmeLibRun(&userCondInfo, &g_state, userStmeHandle);
+        uint8 stateCur = StmeLibRun(&userCondInfo, &g_stmeUserHistoryInfo.state, userStmeHandle);
         printf("Current state is [%d] at [%d].\n", stateCur, currentTime);
     }
 
