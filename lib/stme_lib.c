@@ -110,17 +110,25 @@ void StmeLibRegisterAction(uint8 statePre, uint8 stateCur, StmeLibActionCallBack
 // calc current state of state machine
 uint8 StmeLibRun(const void *condInfo, uint8 *statePre, StmeLibCallBackStru *callBackInfo)
 {
-    uint8 stateCur = *statePre;
-    for (size_t i = 0; i < callBackInfo->stateNum; i++)
+    if (*statePre >= callBackInfo->stateNum) {
+        printf("ERROR! statePre out of range [0, %d)", callBackInfo->stateNum);
+        return callBackInfo->stateNum;
+    }
+    uint8 stateCur;
+    // Do State Transition
+    StmeLibTransitionCallBack transitionFunc = *(callBackInfo->transitionList + *statePre);
+    if (transitionFunc)
     {
-        // Do State Transition
-        uint8 stateRet = (*(callBackInfo->transitionList + i))(condInfo);
-        if (stateRet != callBackInfo->stateNum)
-        {
-            // update for valid state value
-            stateCur = stateRet;
-            break;
-        }
+        stateCur = transitionFunc(condInfo);
+    }
+    else
+    {
+        // for Not transition state, return dummy state value.
+        return callBackInfo->stateNum;
+    }
+    if (stateCur >= callBackInfo->stateNum) {
+        printf("ERROR! stateCur out of range [0, %d)", callBackInfo->stateNum);
+        return callBackInfo->stateNum;
     }
     // Do Action between States.
     size_t index = StmeLibConvertIndexTable2Array(*statePre, stateCur, callBackInfo->stateNum);

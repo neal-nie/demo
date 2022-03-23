@@ -32,75 +32,54 @@ typedef struct
 uint8 StmeUserJumpOutOff(const void *condInfo)
 {
     StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
-    if (g_state == STATE_OFF)
+
+    if (userCondInfo->flgSwitchOn)
     {
-        if (userCondInfo->flgSwitchOn)
-        {
-            return STATE_ON;
-        }
-        else
-        {
-            // keep in OFF
-            return STATE_OFF;
-        }
+        return STATE_ON;
     }
     else
     {
-        // pre state is not OFF
-        return STATE_BUFF;
+        // keep in OFF
+        return STATE_OFF;
     }
 }
 
 uint8 StmeUserJumpOutOn(const void *condInfo)
 {
     StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
-    if (g_state == STATE_ON)
+
+    if (userCondInfo->flgSwitchOff && g_onCounter > OnCounterMin)
     {
-        if (userCondInfo->flgSwitchOff && g_onCounter > OnCounterMin)
-        {
-            // ON to OFF, on at least last time of OnCounterMin
-            return STATE_OFF;
-        }
-        else if (userCondInfo->flgFault)
-        {
-            return STATE_FAULT;
-        }
-        else
-        {
-            // keep in OFF
-            return STATE_ON;
-        }
+        // ON to OFF, on at least last time of OnCounterMin
+        return STATE_OFF;
+    }
+    else if (userCondInfo->flgFault)
+    {
+        return STATE_FAULT;
     }
     else
     {
-        // pre state is not ON
-        return STATE_BUFF;
+        // keep in OFF
+        return STATE_ON;
     }
 }
 
 uint8 StmeUserJumpOutFault(const void *condInfo)
 {
     StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
-    if (g_state == STATE_FAULT)
+
+    if (userCondInfo->flgSwitchOff)
     {
-        if (userCondInfo->flgSwitchOff)
-        {
-            return STATE_OFF;
-        }
-        else if (userCondInfo->flgHeal)
-        {
-            return STATE_ON;
-        }
-        else
-        {
-            // keep in FAULT
-            return STATE_FAULT;
-        }
+        return STATE_OFF;
+    }
+    else if (userCondInfo->flgHeal)
+    {
+        return STATE_ON;
     }
     else
     {
-        // pre state is not FAULT
-        return STATE_BUFF;
+        // keep in FAULT
+        return STATE_FAULT;
     }
 }
 
@@ -144,29 +123,36 @@ int main()
     // Run State Machine Periodically
     for (currentTime = 0; currentTime < 1000; currentTime++)
     {
-        if (currentTime > 200) {
+        if (currentTime > 200)
+        {
             userCondInfo.flgSwitchOn = true;
         }
-        if (currentTime > 400) {
+        if (currentTime > 400)
+        {
             userCondInfo.flgSwitchOn = false;
             userCondInfo.flgSwitchOff = true;
         }
-        if (currentTime > 750) {
+        if (currentTime > 750)
+        {
             userCondInfo.flgSwitchOn = true;
             userCondInfo.flgSwitchOff = false;
         }
-        if (currentTime > 800) {
+        if (currentTime > 800)
+        {
             userCondInfo.flgFault = true;
         }
-        if (currentTime > 850) {
+        if (currentTime > 850)
+        {
             userCondInfo.flgFault = false;
             userCondInfo.flgHeal = true;
         }
-        if (currentTime > 900) {
+        if (currentTime > 900)
+        {
             userCondInfo.flgFault = true;
             userCondInfo.flgHeal = false;
         }
-        if (currentTime > 950) {
+        if (currentTime > 950)
+        {
             userCondInfo.flgSwitchOn = false;
             userCondInfo.flgSwitchOff = true;
         }
