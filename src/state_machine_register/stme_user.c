@@ -9,6 +9,8 @@
 #include "types.h"
 #include "stme_lib.h"
 
+#define STATIC_MEMORY 1
+
 #define STATE_OFF 0
 #define STATE_ON 1
 #define STATE_FAULT 2
@@ -16,6 +18,11 @@
 
 uint8 g_state;
 uint16 g_onCounter;
+
+#if STATIC_MEMORY
+StmeLibTransitionCallBack g_transitionFuncArr[STATE_BUFF];
+StmeLibActionCallBack g_actionFuncArr[STATE_BUFF * STATE_BUFF];
+#endif
 
 size_t currentTime;
 
@@ -108,14 +115,19 @@ void StmeUserInit(StmeLibCallBackStru *stmeCallBackHandle)
 int main()
 {
     // input info
-    StmeUserCondStru userCondInfo = {
-        .flgSwitchOn = false,
-        .flgSwitchOff = false,
-        .flgFault = false,
-        .flgHeal = false};
+    StmeUserCondStru userCondInfo = {0};
 
     // User State Machine Global Variable Declare
+#if STATIC_MEMORY
+    StmeLibCallBackStru userStmeInfo = {
+        .stateNum = STATE_BUFF,
+        .actionMap = g_actionFuncArr,
+        .transitionList = g_transitionFuncArr,
+    };
+    StmeLibCallBackStru *userStmeHandle = &userStmeInfo;
+#else
     StmeLibCallBackStru *userStmeHandle = StmeLibNew(STATE_BUFF);
+#endif
 
     // User State Machine Init
     StmeUserInit(userStmeHandle);
