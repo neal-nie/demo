@@ -12,7 +12,7 @@
 #define STATE_OFF 0
 #define STATE_ON 1
 #define STATE_FAULT 2
-#define STATE_BUFF 3 // Dummy State, as Invalid State.
+#define STATE_BUFF 3 // dummy state value as stateNum.
 
 uint8 g_state;
 uint16 g_onCounter;
@@ -118,12 +118,12 @@ void StmeUserInit(StmeLibCallBackStru *stmeCallBackHandle)
 {
     g_state = STATE_OFF;
     g_onCounter = 0;
-    StmeLibRegistTransition(STATE_ON, StmeUserJumpOutOn, stmeCallBackHandle);
-    StmeLibRegistTransition(STATE_OFF, StmeUserJumpOutOff, stmeCallBackHandle);
-    StmeLibRegistTransition(STATE_FAULT, StmeUserJumpOutFault, stmeCallBackHandle);
-    StmeLibRegistAction(STATE_OFF, STATE_ON, StmeUserEnterOn, stmeCallBackHandle);
-    StmeLibRegistAction(STATE_FAULT, STATE_ON, StmeUserEnterOn, stmeCallBackHandle);
-    StmeLibRegistAction(STATE_ON, STATE_ON, StmeUserDuringOn, stmeCallBackHandle);
+    StmeLibRegisterTransition(STATE_ON, StmeUserJumpOutOn, stmeCallBackHandle);
+    StmeLibRegisterTransition(STATE_OFF, StmeUserJumpOutOff, stmeCallBackHandle);
+    StmeLibRegisterTransition(STATE_FAULT, StmeUserJumpOutFault, stmeCallBackHandle);
+    StmeLibRegisterAction(STATE_OFF, STATE_ON, StmeUserEnterOn, stmeCallBackHandle);
+    StmeLibRegisterAction(STATE_FAULT, STATE_ON, StmeUserEnterOn, stmeCallBackHandle);
+    StmeLibRegisterAction(STATE_ON, STATE_ON, StmeUserDuringOn, stmeCallBackHandle);
 }
 
 int main()
@@ -136,10 +136,10 @@ int main()
         .flgHeal = false};
 
     // User State Machine Global Variable Declare
-    StmeLibCallBackStru *stmeCallBackHandle = StmeLibNew(STATE_BUFF);
+    StmeLibCallBackStru *userStmeHandle = StmeLibNew(STATE_BUFF);
 
     // User State Machine Init
-    StmeUserInit(stmeCallBackHandle);
+    StmeUserInit(userStmeHandle);
 
     // Run State Machine Periodically
     for (currentTime = 0; currentTime < 1000; currentTime++)
@@ -148,10 +148,29 @@ int main()
             userCondInfo.flgSwitchOn = true;
         }
         if (currentTime > 400) {
-            userCondInfo.flgSwitchOff = true;
             userCondInfo.flgSwitchOn = false;
+            userCondInfo.flgSwitchOff = true;
         }
-        uint8 stateCur = StmeLibProc(&userCondInfo, &g_state, stmeCallBackHandle);
+        if (currentTime > 750) {
+            userCondInfo.flgSwitchOn = true;
+            userCondInfo.flgSwitchOff = false;
+        }
+        if (currentTime > 800) {
+            userCondInfo.flgFault = true;
+        }
+        if (currentTime > 850) {
+            userCondInfo.flgFault = false;
+            userCondInfo.flgHeal = true;
+        }
+        if (currentTime > 900) {
+            userCondInfo.flgFault = true;
+            userCondInfo.flgHeal = false;
+        }
+        if (currentTime > 950) {
+            userCondInfo.flgSwitchOn = false;
+            userCondInfo.flgSwitchOff = true;
+        }
+        uint8 stateCur = StmeLibRun(&userCondInfo, &g_state, userStmeHandle);
         printf("Current state is [%d] at [%d].\n", stateCur, currentTime);
     }
 
