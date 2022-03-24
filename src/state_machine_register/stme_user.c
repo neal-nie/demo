@@ -40,7 +40,7 @@ size_t currentTime;
 
 uint8 StmeUserJumpOutOff(const void *condInfo)
 {
-    StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
+    const StmeUserCondStru *userCondInfo = (const StmeUserCondStru *)condInfo;
 
     if (userCondInfo->flgSwitchOn)
     {
@@ -55,7 +55,7 @@ uint8 StmeUserJumpOutOff(const void *condInfo)
 
 uint8 StmeUserJumpOutOn(const void *condInfo)
 {
-    StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
+    const StmeUserCondStru *userCondInfo = (const StmeUserCondStru *)condInfo;
 
     if (userCondInfo->flgSwitchOff && g_stmeUserHistoryInfo.onCounter > OnCounterMin)
     {
@@ -75,7 +75,7 @@ uint8 StmeUserJumpOutOn(const void *condInfo)
 
 uint8 StmeUserJumpOutFault(const void *condInfo)
 {
-    StmeUserCondStru *userCondInfo = (StmeUserCondStru *)condInfo;
+    const StmeUserCondStru *userCondInfo = (const StmeUserCondStru *)condInfo;
 
     if (userCondInfo->flgSwitchOff)
     {
