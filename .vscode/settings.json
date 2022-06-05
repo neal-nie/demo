@@ -9,7 +9,7 @@
         "${workspaceFolder}\\lib"
     ],
     "files.associations": {
-        "*.h": "c",
+        "*.h": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -56,5 +56,6 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled"
 }
