@@ -40,7 +40,7 @@
                 "-Ilib", // include header file lib dir
                 "-g", // generate exe support gdb for debug
                 "${file}",
-                "lib\\*.c", // compile source file in lib dir
+                "lib\\*.cpp", // compile source file in lib dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
@@ -58,7 +58,10 @@
             "type": "shell",
             "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
             "problemMatcher": [],
-            "group": "test"
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         },
         {
             "label": "Build-CPP&Run",
@@ -71,7 +74,7 @@
             "dependsOrder": "sequence",
             "problemMatcher": [],
             "group": {
-                "kind": "test",
+                "kind": "build",
                 "isDefault": true
             }
         },

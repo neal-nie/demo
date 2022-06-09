@@ -4,50 +4,8 @@
  */
 
 #include <iostream>
+#include "box.h"
 
-class Box
-{
-private:
-    double length{1.};
-    double width{1.};
-    double height{1.};
-    static int objCounter;
-
-public:
-    // declaration of function
-    Box(double lv, double wv, double hv);
-
-    // definition of function
-    Box(double side) : Box(side, side, side)
-    {
-        std::cout << "call constructor 2" << std::endl;
-    }
-    Box()
-    {
-        std::cout << "call constructor default" << std::endl;
-    }
-
-    double volume() const;
-
-    double getLength() { return length; }
-    double getWidth() { return width; }
-    double getHeight() { return height; }
-
-    static int getObjCounter() { return objCounter; }
-};
-
-// Necessary! used to initalize static variable. Define it!
-int Box::objCounter{3};
-
-double Box::volume() const
-{
-    return length * width * height;
-}
-
-Box::Box(double lv, double wv, double hv) : length{lv}, width{wv}, height{hv}
-{
-    std::cout << "call constructor 1" << std::endl;
-}
 
 int main()
 {
