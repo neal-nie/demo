@@ -1,27 +1,16 @@
 {
     "version": "2.0.0",
-    // "windows": {
-    //     "options": {
-    //         "shell": {
-    //             "args": [
-    //                 "/d",
-    //                 "/c"
-    //             ],
-    //             "executable": "C:\\Windows\\System32\\cmd.exe"
-    //         }
-    //     }
-    // },
     "tasks": [
         {
             "label": "Build-CPP",
             "detail": "Build current file with MinGW Cpp",
             "type": "shell",
-            "command": "D:\\msys64\\mingw64\\bin\\g++.exe",
+            "command": "/usr/bin/g++",
             "args": [
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}/${fileBasenameNoExtension}.out"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -35,14 +24,14 @@
             "label": "Build-CPP-Lib",
             "detail": "Build current file with MinGW Cpp including lib folder",
             "type": "shell",
-            "command": "D:\\msys64\\mingw64\\bin\\g++.exe",
+            "command": "/usr/bin/g++",
             "args": [
                 "-Ilib", // include header file lib dir
                 "-g", // generate exe support gdb for debug
                 "${file}",
-                "lib\\*.cpp", // compile source file in lib dir
+                "lib/*.cpp", // compile source file in lib dir
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}/${fileBasenameNoExtension}.out"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -56,7 +45,7 @@
             "label": "Run-Exe",
             "detail": "Run exe of current file",
             "type": "shell",
-            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
             "problemMatcher": [],
             "group": {
                 "kind": "test",
@@ -103,17 +92,11 @@
         },
         {
             "label": "Clear",
-            "detail": "Delete all exe files, forced, sub-folder search and quiet.",
+            "detail": "Delete all *.out files in workspace subfolders, forced(not interactive)",
             "type": "shell",
-            "command": "del",
-            "args": [
-                "/f",
-                "/s",
-                "/q",
-                "*.exe"
-            ],
+            "command": "find . -type f -name *.out -exec rm {} \\;",
             "options": {
-                "cwd": "${workspaceFolder}/src"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
         }
