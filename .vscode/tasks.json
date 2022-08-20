@@ -63,9 +63,30 @@
             "dependsOrder": "sequence",
             "problemMatcher": [],
             "group": {
-                "kind": "build",
-                "isDefault": true
+                "kind": "build"
             }
+        },
+        {
+            "label": "Build-C++ Eigen3",
+            "detail": "Build current file with g++ and including <eigen3>",
+            "type": "shell",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-I", // include header file lib dir
+                "/usr/include/eigen3",
+                "-g", // generate exe support gdb for debug
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
         },
         {
             "label": "Build-CPP-Lib&Run",
@@ -100,5 +121,6 @@
             },
             "problemMatcher": []
         }
+    
     ]
 }
