@@ -2,7 +2,10 @@
     "configurations": [
         {
             "name": "Linux",
-            "includePath": ["${workspaceFolder}/**"],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/eigen3"
+            ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
